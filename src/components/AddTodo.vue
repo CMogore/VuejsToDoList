@@ -1,40 +1,47 @@
 <template>
-    <div>
-      <input v-model="newTodo"  placeholder="Add new todo">
+<div>
+    <input v-model="newTodo" placeholder="Add new todo">
     <button @click="addTodo">Add</button>
+</div>
+</template>
 
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        newTodo: ''
-      };
-    },
-    methods: {
-      addTodo() {
-        if (this.newTodo.trim() !== '') {
-          this.$emit('add', this.newTodo);
-          this.newTodo = '';
-        }
-      }
+<script>
+import {
+    ref
+} from 'vue';
+
+export default {
+    setup(props, {
+        emit
+    }) {
+        const newTodo = ref('');
+
+        const addTodo = () => {
+            if (newTodo.value.trim() !== '') {
+                emit('add', newTodo.value);
+                newTodo.value = '';
+            }
+        };
+
+        return {
+            newTodo,
+            addTodo
+        };
     }
-  };
-  </script>
-  <style scoped>
-  input[type="text"] {
+};
+</script>
+
+<style scoped>
+input[type="text"] {
     padding: 5px;
     margin-right: 10px;
-  }
-  
-  button {
+}
+
+button {
     padding: 5px 17px;
     background-color: #4caf50;
     color: #fff;
     border: none;
     cursor: pointer;
-  }
-  </style>
-  
+}
+</style>

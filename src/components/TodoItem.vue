@@ -1,56 +1,59 @@
 <template>
-<div class="item">
-    <input type="checkbox" :checked="todo.completed" @change="toggleComplete">
-    <span :class="{ completed: todo.completed }">
+    <div class="item">
+      <input type="checkbox" :checked="todo.completed" @change="toggleComplete">
+      <span :class="{ completed: todo.completed }">
         <!-- slots -->
         <slot :text="todo.text"></slot>
-    </span>
-    <button @click="deleteTodo">Delete</button>
-</div>
-</template>
-
+      </span>
+      <button @click="deleteTodo">Delete</button>
+    </div>
+  </template>
   
+  <script>
+  import { defineComponent } from 'vue';
   
-<script>
-export default {
-    // props used to receive todo objects from TodoList.vue.
-    props: ['todo'],
+  export default defineComponent({
+    props: {
+      todo: {
+        type: Object,
+        required: true
+      }
+    },
     methods: {
-        toggleComplete() {
-            this.$emit('toggle-complete', this.todo);
-        },
-        deleteTodo() {
-            this.$emit('delete', this.todo);
-        }
+      toggleComplete() {
+        this.$emit('toggle-complete', this.todo);
+      },
+      deleteTodo() {
+        this.$emit('delete', this.todo);
+      }
     }
-};
-</script>
+  });
+  </script>
   
-  
-<style scoped>
-.item {
+  <style scoped>
+  .item {
     margin-top: 30px;
     text-align: center;
-}
-
-.todo-item {
-
+  }
+  
+  .todo-item {
     margin-bottom: 10px;
-}
-
-.completed {
+  }
+  
+  .completed {
     text-decoration: line-through;
-}
-
-input[type="checkbox"] {
+  }
+  
+  input[type="checkbox"] {
     margin-right: 10px;
-}
-
-button {
+  }
+  
+  button {
     padding: 5px 10px;
     background-color: #f44336;
     color: #fff;
     border: none;
     cursor: pointer;
-}
-</style>
+  }
+  </style>
+  
