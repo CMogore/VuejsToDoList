@@ -2,6 +2,7 @@
 <div class="item">
     <input type="checkbox" :checked="todo.completed" @change="toggleComplete">
     <span :class="{ completed: todo.completed }">
+        <!-- slots -->
         <slot :text="todo.text"></slot>
     </span>
     <button @click="deleteTodo">Delete</button>
@@ -12,6 +13,7 @@
   
 <script>
 export default {
+    // props used to receive todo objects from TodoList.vue.
     props: ['todo'],
     methods: {
         toggleComplete() {

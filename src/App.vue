@@ -3,6 +3,11 @@
     <h1>Todo List</h1>
     <!-- apply -->
     <TodoList />
+    <!-- <ul id="country_list">
+      <li v-for="country in countries_list" :key="country.code" :value="country.code">
+        {{ country.name }} ({{ country.code }})
+      </li>
+    </ul> -->
   </div>
 </template>
 
@@ -11,6 +16,15 @@
 import TodoList from './components/TodoList.vue';
 
 export default {
+  // data() {
+  //   return {
+  //     countries_list: [
+  //       { "name": "Canada", "code": "CAN" },
+  //       { "name": "Mexico", "code": "MEX" },
+  //       { "name": "United States of America", "code": "USA" }
+  //     ]
+  //   };
+  // },
   components: {
     //declare
     TodoList
