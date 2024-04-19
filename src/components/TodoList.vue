@@ -1,55 +1,79 @@
 <template>
-<div>
-    <AddTodo @add="addTodo" />
-    <div v-for="(todo, index) in todos" :key="index">
-        <!-- <TodoItem :todo="todo" @toggle-complete="toggleComplete" @delete="deleteTodo" /> -->
+    <div>
+      <h2>Todos</h2>
+      <AddTodo @add="addTodo"/>
+      <div v-for="todo in todos" :key="todo.id">
         <TodoItem :todo="todo" @toggle-complete="toggleComplete" @delete="deleteTodo">
-            <template v-slot="{ text }">{{ text | capitalize }} </template></TodoItem>
+          <template v-slot="{ text }">
+            {{ text | capitalize }}
+          </template>
+        </TodoItem>
+      </div>
+      <p>Total Completed: {{ totalCompleted }}</p>
     </div>
-
-</div>
-</template>
-
-<script>
-import AddTodo from './AddTodo.vue';
-import TodoItem from './TodoItem.vue';
-import { TodoLoggingMixin } from './TodoLoggingMixin.js'; // Import the mixin
-
-export default {
-    mixins: [TodoLoggingMixin], // Use the mixin
+  </template>
+  
+  <script>
+  import AddTodo from './AddTodo.vue';
+  import TodoItem from './TodoItem.vue';
+  import { TodoLoggingMixin } from './TodoLoggingMixin.js';
+  
+  export default {
+    mixins: [TodoLoggingMixin],
     components: {
-        AddTodo,
-        TodoItem
+      AddTodo,
+      TodoItem
     },
     data() {
-        return {
-            todos: []
-        };
+      return {
+        todos: []
+      };
+    },
+    computed: {
+      totalCompleted() {
+        return this.todos.filter(todo => todo.completed).length;
+      }
     },
     methods: {
-        addTodo(newTodo) {
-            this.todos.push({
-                text: newTodo,
-                completed: false
-            });
-            this.logTodoAction('Added', {  text: newTodo, completed: false }); // Log the action
-        },
-        toggleComplete(todo) {
-            todo.completed = !todo.completed;
-            this.logTodoAction('Completed', todo); // Log the action
-        },
-        deleteTodo(todoToDelete) {
-            this.todos = this.todos.filter(todo => todo !== todoToDelete);
-            this.logTodoAction('Deleted', todoToDelete); // Log the action
-        }
+      addTodo(newTodo) {
+        this.todos.push({ id: Date.now(), text: newTodo, completed: false });
+        this.logTodoAction('Added', { id: Date.now(), text: newTodo, completed: false });
+      },
+      toggleComplete(todo) {
+        todo.completed = !todo.completed;
+      },
+      deleteTodo(todo) {
+        this.todos = this.todos.filter(item => item.id !== todo.id);
+        this.logTodoAction('Deleted', todo);
+      }
     },
-    //filter applied to format text
     filters: {
-        capitalize(value) {
-            if (!value) return '';
-            value = value.toString();
-            return value.toUpperCase();
-        }
+      capitalize(value) {
+        if (!value) return '';
+        value = value.toString();
+        return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+    },
+    watch: {
+      todos: {
+        handler(newTodos, oldTodos) {
+          console.log('Todos changed:', newTodos, oldTodos);
+        },
+        deep: true
+      }
+    },
+    created() {
+      console.log('Component created');
+    },
+    mounted() {
+      console.log('Component mounted');
+    },
+    updated() {
+      console.log('Component updated');
+    },
+    destroyed() {
+      console.log('Component destroyed');
     }
-};
-</script>
+  };
+  </script>
+  
